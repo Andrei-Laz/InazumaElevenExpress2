@@ -6,7 +6,7 @@ import com.example.inazumaelevenexpress2.model.enums.Sex
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Character(
+data class InazumaCharacter(
     var characterId: Int? = null,
 
     var nickname: String = "",

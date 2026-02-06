@@ -1,13 +1,13 @@
 package com.example.inazumaelevenexpress2.data
 
-import com.example.inazumaelevenexpress2.network.CharactersApiService
+import com.example.inazumaelevenexpress2.network.InazumaCharactersApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import retrofit2.Retrofit
 import okhttp3.MediaType.Companion.toMediaType
 
 interface AppContainer {
-    val charactersRepository: CharactersRepository
+    val inazumaCharactersRepository: InazumaCharactersRepository
 }
 
 class DefaultAppContainer: AppContainer {
@@ -18,11 +18,11 @@ class DefaultAppContainer: AppContainer {
         .baseUrl(BASE_URL)
         .build()
 
-    private val retrofitService: CharactersApiService by lazy {
-        retrofit.create(CharactersApiService::class.java)
+    private val retrofitService: InazumaCharactersApiService by lazy {
+        retrofit.create(InazumaCharactersApiService::class.java)
     }
 
-    override val charactersRepository: CharactersRepository by lazy {
-        DefaultCharactersRepository(retrofitService)
+    override val inazumaCharactersRepository: InazumaCharactersRepository by lazy {
+        DefaultInazumaCharactersRepository(retrofitService)
     }
 }
