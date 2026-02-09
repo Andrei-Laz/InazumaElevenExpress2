@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inazumaelevenexpress2.R
 import com.example.inazumaelevenexpress2.ui.screens.CharactersScreen
 import com.example.inazumaelevenexpress2.ui.screens.InazumaCharactersViewModel
