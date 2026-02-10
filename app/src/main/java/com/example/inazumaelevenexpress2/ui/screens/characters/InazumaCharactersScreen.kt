@@ -1,4 +1,4 @@
-package com.example.inazumaelevenexpress2.ui.screens
+package com.example.inazumaelevenexpress2.ui.screens.characters
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.inazumaelevenexpress2.R
 import com.example.inazumaelevenexpress2.model.InazumaCharacter
+import com.example.inazumaelevenexpress2.ui.screens.hissatsus.ErrorScreen
+import com.example.inazumaelevenexpress2.ui.screens.hissatsus.LoadingScreen
 
 @Composable
 fun CharactersScreen(

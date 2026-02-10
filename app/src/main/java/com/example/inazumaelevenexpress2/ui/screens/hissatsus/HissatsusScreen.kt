@@ -1,11 +1,13 @@
-package com.example.inazumaelevenexpress2.ui.screens
+package com.example.inazumaelevenexpress2.ui.screens.hissatsus
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -219,14 +222,10 @@ private fun PowerBar(power: Int) {
 private fun getElementColor(element: Element): Color {
     return when (element) {
         Element.FIRE -> Color(0xFFFF6B6B)      // Red-orange
-        Element.WATER -> Color(0xFF4ECDC4)     // Teal
-        Element.EARTH -> Color(0xFF96CEB4)     // Sage green
-        Element.WIND -> Color(0xFF7ED6DF)      // Sky blue
-        Element.LIGHTNING -> Color(0xFFFFD93D) // Yellow
-        Element.DARK -> Color(0xFF6C5CE7)      // Purple
-        Element.LIGHT -> Color(0xFFFFF3B0)     // Pale yellow
+        Element.EARTH -> Color(0xFF095E37)     // Sage brown
+        Element.WIND -> Color(0xFF7ED6DF) // Sky blue
+        Element.WOOD -> Color(0xFF32B865) //forest green
         Element.VOID -> Color(0xFF555555)      // Gray
-        Element.UNKNOWN -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 }
 

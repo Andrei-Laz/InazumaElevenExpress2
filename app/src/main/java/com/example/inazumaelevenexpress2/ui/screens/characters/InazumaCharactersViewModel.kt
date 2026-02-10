@@ -1,4 +1,4 @@
-package com.example.inazumaelevenexpress2.ui.screens
+package com.example.inazumaelevenexpress2.ui.screens.characters
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

@@ -1,0 +1,42 @@
+package com.example.inazumaelevenexpress2.ui.navigation
+
+// Auth flow destinations (no bars/drawer)
+sealed class AuthDestination(val route: String) {
+    object Initial : AuthDestination("initial")
+    object Login : AuthDestination("login")
+    object Register : AuthDestination("register")
+
+    companion object {
+        fun fromRoute(route: String): AuthDestination = when (route) {
+            Initial.route -> Initial
+            Login.route -> Login
+            Register.route -> Register
+            else -> Initial
+        }
+    }
+}
+
+// Main app destinations (with full UI)
+sealed class MainDestination(val route: String, val title: String) {
+    object Home : MainDestination("home", "Home")
+    object Characters : MainDestination("characters", "Characters")
+    object Hissatsus : MainDestination("hissatsus", "Hissatsus")
+
+    companion object {
+        fun fromRoute(route: String): MainDestination = when (route) {
+            Home.route -> Home
+            Characters.route -> Characters
+            Hissatsus.route -> Hissatsus
+            else -> Home
+        }
+    }
+}
+
+enum class Screen(val route: String) {
+    Initial("initial"),
+    Login("login"),
+    Register("register"),
+    Home("home"),
+    Characters("characters"),
+    Hissatsus("hissatsus")
+}
