@@ -1,17 +1,25 @@
+// ui/screens/auth/InitialScreen.kt
 package com.example.inazumaelevenexpress2.ui.screens.auth
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.inazumaelevenexpress2.R
 
 @Composable
@@ -20,44 +28,84 @@ fun InitialScreen(
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    // Background image as full-screen backdrop
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        // App logo (use your actual logo drawable)
+        // Background image with overlay
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = stringResource(id = R.string.app_name),
-            modifier = Modifier.size(120.dp)
+            painter = painterResource(id = R.drawable.inazuma_background),
+            contentDescription = "Background",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = stringResource(id = R.string.app_name),
-            style = MaterialTheme.typography.displayMedium,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        Button(
-            onClick = onLoginClick,
-            modifier = Modifier.fillMaxWidth()
+        // Content
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Login")
-        }
+            // App logo
+            Image(
+                painter = painterResource(id = R.drawable.inazuma_logo),
+                contentDescription = stringResource(id = R.string.app_logo),
+                modifier = Modifier
+                    .size(400.dp)
+                    .padding(16.dp)
+//                    .graphicsLayer {
+//                        shadowElevation = 24f
+//                        this.spotShadowColor = Color(0x66000000)
+//                    }
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = onRegisterClick,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Register")
+            // Login button (orange with glow)
+            Button(
+                onClick = onLoginClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .padding(horizontal = 48.dp),
+                shape = RoundedCornerShape(30.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFA500),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "LOG IN",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Register button (blue with glow)
+            Button(
+                onClick = onRegisterClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .padding(horizontal = 48.dp),
+                shape = RoundedCornerShape(30.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF0078FF),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "REGISTER NOW",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
         }
     }
 }

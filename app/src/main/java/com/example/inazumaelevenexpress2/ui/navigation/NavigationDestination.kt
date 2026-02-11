@@ -18,15 +18,22 @@ sealed class AuthDestination(val route: String) {
 
 // Main app destinations (with full UI)
 sealed class MainDestination(val route: String, val title: String) {
+    object Main : MainDestination("main", "Main")
     object Home : MainDestination("home", "Home")
     object Characters : MainDestination("characters", "Characters")
     object Hissatsus : MainDestination("hissatsus", "Hissatsus")
+    object Settings : MainDestination("settings", "Settings")
+    object Account : MainDestination("account", "Account")
+
 
     companion object {
         fun fromRoute(route: String): MainDestination = when (route) {
+            Main.route -> Main
             Home.route -> Home
             Characters.route -> Characters
             Hissatsus.route -> Hissatsus
+            Settings.route -> Settings
+            Account.route -> Account
             else -> Home
         }
     }
@@ -38,5 +45,8 @@ enum class Screen(val route: String) {
     Register("register"),
     Home("home"),
     Characters("characters"),
-    Hissatsus("hissatsus")
+    Hissatsus("hissatsus"),
+    Settings("settings"),
+    Account("account"),
+    Main("main")
 }
