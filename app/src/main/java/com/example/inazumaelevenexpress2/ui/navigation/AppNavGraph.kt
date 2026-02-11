@@ -2,13 +2,19 @@
 package com.example.inazumaelevenexpress2.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.inazumaelevenexpress2.ui.screens.account.AccountScreen
 import com.example.inazumaelevenexpress2.ui.screens.auth.InitialScreen
 import com.example.inazumaelevenexpress2.ui.screens.auth.LoginScreen
 import com.example.inazumaelevenexpress2.ui.screens.auth.RegisterScreen
+import com.example.inazumaelevenexpress2.ui.screens.characters.CharacterDetailsScreen
+import com.example.inazumaelevenexpress2.ui.screens.characters.InazumaCharactersUiState
+import com.example.inazumaelevenexpress2.ui.screens.characters.InazumaCharactersViewModel
 import com.example.inazumaelevenexpress2.ui.screens.main.MainScreen
 import com.example.inazumaelevenexpress2.ui.screens.settings.SettingsScreen
 
@@ -31,11 +37,8 @@ fun AppNavGraph() {
             LoginScreen(
                 onNavigateToHome = { 
                     navController.navigate(Screen.Main.route) {
-                        // Avoid multiple copies of the same destination when re-selecting the same item
                         launchSingleTop = true
-                        // Restore state when re-selecting a previously selected item
                         restoreState = true
-                        // Pop up to the start destination of the graph to avoid building up a large stack of destinations
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
@@ -62,6 +65,20 @@ fun AppNavGraph() {
 
         composable(route = Screen.Account.route) {
             AccountScreen()
+        }
+
+        composable(
+            route = Screen.CharacterDetails.route,
+            arguments = listOf(navArgument("characterId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val viewModel: InazumaCharactersViewModel = viewModel(
+                factory = InazumaCharactersViewModel.Factory
+            )
+            val characterId = backStackEntry.arguments?.getString("characterId")
+            val character = (viewModel.inazumaCharactersUiState as? InazumaCharactersUiState.Success)?.characters?.find { it.characterId.toString() == characterId }
+            if (character != null) {
+                CharacterDetailsScreen(character = character, navController = navController)
+            }
         }
     }
 }

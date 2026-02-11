@@ -1,5 +1,6 @@
 package com.example.inazumaelevenexpress2.ui.screens.characters
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,31 +11,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.inazumaelevenexpress2.R
 import com.example.inazumaelevenexpress2.model.InazumaCharacter
-import com.example.inazumaelevenexpress2.ui.screens.hissatsus.ErrorScreen
-import com.example.inazumaelevenexpress2.ui.screens.hissatsus.LoadingScreen
+import com.example.inazumaelevenexpress2.ui.navigation.Screen
+import com.example.inazumaelevenexpress2.ui.theme.DarkOrange
 
 @Composable
 fun CharactersScreen(
     uiState: InazumaCharactersUiState,
     retryAction: () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -45,6 +53,7 @@ fun CharactersScreen(
         is InazumaCharactersUiState.Success ->
             CharactersListScreen(
                 characters = uiState.characters,
+                navController = navController,
                 modifier = modifier.padding(
                     start = dimensionResource(R.dimen.padding_medium),
                     top = dimensionResource(R.dimen.padding_medium),
@@ -79,6 +88,7 @@ fun ErrorScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(stringResource(R.string.loading_failed))
+        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = retryAction) {
             Text(stringResource(R.string.retry))
         }
@@ -88,95 +98,54 @@ fun ErrorScreen(
 @Composable
 fun CharacterCard(
     character: InazumaCharacter,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
-        ) {
-
-            // Name + nickname
-            Text(
-                text = character.name,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-
-            if (character.nickname.isNotBlank()) {
-                Text(
-                    text = "\"${character.nickname}\"",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            Spacer(Modifier.height(8.dp))
-
-            // Basic info
-            Text(
-                text = "Sex: ${character.sex} · Element: ${character.element} · Position: ${character.position}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-
-            Spacer(Modifier.height(12.dp))
-
-            // Stats
-            StatsGrid(character)
-        }
-    }
-}
-
-@Composable
-private fun StatsGrid(character: InazumaCharacter) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        StatRow("Kick", character.kick)
-        StatRow("Dribble", character.dribble)
-        StatRow("Block", character.block)
-        StatRow("Catch", character.catch)
-        StatRow("Technique", character.technique)
-        StatRow("Speed", character.speed)
-        StatRow("Stamina", character.stamina)
-        StatRow("Luck", character.luck)
-    }
-}
-
-@Composable
-private fun StatRow(label: String, value: Int) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium)
-        Text(
-            value.toString(),
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.End
+        modifier = modifier.clickable { navController.navigate(Screen.CharacterDetails.route.replace("{characterId}", character.characterId.toString())) },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = DarkOrange
         )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AsyncImage(
+                model = R.drawable.default_image,
+                contentDescription = character.name,
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+            )
+            Column(modifier = Modifier.padding(start = 8.dp)) {
+                Text(text = character.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(text = "Position: ${character.position}", style = MaterialTheme.typography.bodyMedium, color = Color.White)
+                Text(text = "Element: ${character.element}", style = MaterialTheme.typography.bodyMedium, color = Color.White)
+            }
+        }
     }
 }
 
 @Composable
 private fun CharactersListScreen(
     characters: List<InazumaCharacter>,
+    navController: NavController,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(200.dp),
         modifier = modifier,
         contentPadding = contentPadding,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(
-            items = characters,
-            key = { it.characterId ?: it.name }
-        ) { character ->
-            CharacterCard(
-                character = character,
-                modifier = Modifier.fillMaxWidth()
-            )
+        items(characters) { character ->
+            CharacterCard(character = character, navController = navController)
         }
     }
 }

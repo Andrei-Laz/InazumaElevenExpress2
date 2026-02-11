@@ -300,6 +300,7 @@ fun MainScreen(navController: NavController) {
                             CharactersScreen(
                                 uiState = viewModel.inazumaCharactersUiState,
                                 retryAction = viewModel::getCharacters,
+                                navController = navController,
                                 modifier = Modifier.fillMaxSize()
                             )
                         }

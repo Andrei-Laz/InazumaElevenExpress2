@@ -48,5 +48,6 @@ enum class Screen(val route: String) {
     Hissatsus("hissatsus"),
     Settings("settings"),
     Account("account"),
-    Main("main")
+    Main("main"),
+    CharacterDetails("character_details/{characterId}")
 }

@@ -12,8 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.example.inazumaelevenexpress2.R
 import com.example.inazumaelevenexpress2.model.Hissatsu
 import com.example.inazumaelevenexpress2.model.enums.Element
+import com.example.inazumaelevenexpress2.ui.theme.DarkOrange
 
 @Composable
 fun HissatsusScreen(
@@ -98,55 +100,47 @@ fun HissatsuCard(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = getElementColor(hissatsu.element).copy(alpha = 0.1f)
+            containerColor = DarkOrange
         )
     ) {
         Column(
             modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
         ) {
-            // Header: Name + Type badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column {
+                Text(
+                    text = hissatsu.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                if (hissatsu.type != null) {
                     Text(
-                        text = hissatsu.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = getElementColor(hissatsu.element)
+                        text = hissatsu.type.name.lowercase().replaceFirstChar { it.uppercase() },
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.8f)
                     )
-                    if (hissatsu.type != null) {
-                        Text(
-                            text = hissatsu.type.name.lowercase().replaceFirstChar { it.uppercase() },
-                            style = MaterialTheme.typography.labelSmall,
-                            color = getElementColor(hissatsu.element).copy(alpha = 0.8f)
-                        )
-                    }
                 }
-
-                // Element badge
-                ElementBadge(element = hissatsu.element)
             }
 
             Spacer(Modifier.height(12.dp))
 
-            // Description
             if (hissatsu.description.isNotBlank()) {
                 Text(
                     text = hissatsu.description,
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Justify
+                    textAlign = TextAlign.Justify,
+                    color = Color.White
                 )
                 Spacer(Modifier.height(12.dp))
             }
 
-            // Power stat with visual indicator
             PowerBar(power = hissatsu.power)
 
             Spacer(Modifier.height(8.dp))
 
-            // Power value display
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
@@ -155,35 +149,10 @@ fun HissatsuCard(
                     text = "Power: ${hissatsu.power}",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
-                    color = getElementColor(hissatsu.element)
+                    color = Color.White
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ElementBadge(element: Element) {
-    val backgroundColor = getElementColor(element).copy(alpha = 0.2f)
-    val contentColor = getElementColor(element)
-
-    Box(
-        modifier = Modifier
-            .padding(4.dp)
-            .height(24.dp)
-            .padding(horizontal = 8.dp)
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(12.dp)
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = element.name,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Medium,
-            color = contentColor
-        )
     }
 }
 
@@ -219,17 +188,6 @@ private fun PowerBar(power: Int) {
 }
 
 @Composable
-private fun getElementColor(element: Element): Color {
-    return when (element) {
-        Element.FIRE -> Color(0xFFFF6B6B)      // Red-orange
-        Element.EARTH -> Color(0xFF095E37)     // Sage brown
-        Element.WIND -> Color(0xFF7ED6DF) // Sky blue
-        Element.WOOD -> Color(0xFF32B865) //forest green
-        Element.VOID -> Color(0xFF555555)      // Gray
-    }
-}
-
-@Composable
 private fun HissatsusListScreen(
     hissatsus: List<Hissatsu>,
     modifier: Modifier = Modifier,
@@ -249,9 +207,11 @@ private fun HissatsusListScreen(
         return
     }
 
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(300.dp),
         modifier = modifier,
         contentPadding = contentPadding,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(
