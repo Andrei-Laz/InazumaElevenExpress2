@@ -13,16 +13,19 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
@@ -31,6 +34,8 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,7 +44,9 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -69,6 +76,8 @@ import com.example.inazumaelevenexpress2.ui.screens.characters.InazumaCharacters
 import com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusScreen
 import com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusViewModel
 import com.example.inazumaelevenexpress2.ui.screens.home.HomeScreen
+import com.example.inazumaelevenexpress2.ui.theme.DarkOrange
+import com.example.inazumaelevenexpress2.ui.theme.Orange
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -82,48 +91,82 @@ fun MainScreen(navController: NavController) {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(
+                drawerContainerColor = Orange
+            ) {
                 Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top)
                 ) {
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Settings, contentDescription = "Settings") },
-                        label = { Text("Settings") },
-                        selected = false,
-                        onClick = {
-                            navController.navigate(Screen.Settings.route)
-                            scope.launch { drawerState.close() }
-                        }
-                    )
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Account") },
-                        label = { Text("Account") },
-                        selected = false,
-                        onClick = {
-                            navController.navigate(Screen.Account.route)
-                            scope.launch { drawerState.close() }
-                        }
-                    )
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.ExitToApp, contentDescription = "Logout") },
-                        label = { Text("Logout") },
-                        selected = false,
-                        onClick = {
-                            scope.launch { drawerState.close() }
-                            navController.navigate(Screen.Initial.route) {
-                                popUpTo(Screen.Main.route) { inclusive = true }
-                            }
-                        }
+                    val itemColors = NavigationDrawerItemDefaults.colors(
+                        unselectedIconColor = Color.White,
+                        unselectedTextColor = Color.White
                     )
 
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(DarkOrange)
+                    ) {
+                        NavigationDrawerItem(
+                            icon = { Icon(Icons.Default.Settings, contentDescription = "Settings") },
+                            label = { Text("Settings") },
+                            selected = false,
+                            onClick = {
+                                navController.navigate(Screen.Settings.route)
+                                scope.launch { drawerState.close() }
+                            },
+                            colors = itemColors
+                        )
+                    }
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(DarkOrange)
+                    ) {
+                        NavigationDrawerItem(
+                            icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Account") },
+                            label = { Text("Account") },
+                            selected = false,
+                            onClick = {
+                                navController.navigate(Screen.Account.route)
+                                scope.launch { drawerState.close() }
+                            },
+                            colors = itemColors
+                        )
+                    }
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(DarkOrange)
+                    ) {
+                        NavigationDrawerItem(
+                            icon = { Icon(Icons.Default.ExitToApp, contentDescription = "Logout") },
+                            label = { Text("Logout") },
+                            selected = false,
+                            onClick = {
+                                scope.launch { drawerState.close() }
+                                navController.navigate(Screen.Initial.route) {
+                                    popUpTo(Screen.Main.route) { inclusive = true }
+                                }
+                            },
+                            colors = itemColors
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
 
                     val offset = remember { Animatable(Offset.Zero, Offset.VectorConverter) }
 
                     Box(
                         modifier = Modifier
-                            .size(120.dp)
+                            .size(200.dp)
                             .offset {
                                 IntOffset(
                                     offset.value.x.roundToInt(),
@@ -153,8 +196,8 @@ fun MainScreen(navController: NavController) {
                     ) {
                         val infiniteTransition = rememberInfiniteTransition("lightning-glow")
                         val animatedColor by infiniteTransition.animateColor(
-                            initialValue = Color(0xFFFDD835), // Lighter gold
-                            targetValue = Color(0xFFF57F17),  // Darker gold
+                            initialValue = Color.White, // Lighter gold
+                            targetValue = Color(0xFF000000),  // Darker gold
                             animationSpec = infiniteRepeatable(
                                 animation = tween(1000),
                                 repeatMode = RepeatMode.Reverse
@@ -179,6 +222,7 @@ fun MainScreen(navController: NavController) {
                             modifier = Modifier.matchParentSize()
                         )
                     }
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
         }
@@ -201,26 +245,39 @@ fun MainScreen(navController: NavController) {
                         ),
                         navigationIcon = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menu")
+                                Icon(Icons.Default.Menu, contentDescription = "Menu", tint = Orange)
                             }
                         }
                     )
                 },
                 bottomBar = {
-                    NavigationBar {
+                    NavigationBar(
+                        containerColor = Orange
+                    ) {
+                        val itemColors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = Color.White,
+                            selectedTextColor = Color.White,
+                            unselectedIconColor = Color.White.copy(alpha = 0.8f),
+                            unselectedTextColor = Color.White.copy(alpha = 0.8f),
+                            indicatorColor = Color.White.copy(alpha = 0.15f)
+                        )
+
                         NavigationBarItem(
+                            colors = itemColors,
                             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
                             label = { Text("Home") },
                             selected = pagerState.currentPage == 0,
                             onClick = { scope.launch { pagerState.animateScrollToPage(0) } }
                         )
                         NavigationBarItem(
+                            colors = itemColors,
                             icon = { Icon(Icons.Default.List, contentDescription = "Characters") },
                             label = { Text("Characters") },
                             selected = pagerState.currentPage == 1,
                             onClick = { scope.launch { pagerState.animateScrollToPage(1) } }
                         )
                         NavigationBarItem(
+                            colors = itemColors,
                             icon = { Icon(Icons.Default.Star, contentDescription = "Hissatsus") },
                             label = { Text("Hissatsus") },
                             selected = pagerState.currentPage == 2,
