@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.inazumaelevenexpress2.R
 import com.example.inazumaelevenexpress2.model.Hissatsu
+import com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusUiState
 import com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusViewModel
 import com.example.inazumaelevenexpress2.ui.theme.ElementColor
 
@@ -118,7 +119,7 @@ fun AssignHissatsuScreen(
             // Content based on state
             when (hissatsusUiState) {
                 // ✅ FIX 3: Proper when expression for sealed interface (no smart cast needed)
-                is com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusUiState.Loading -> {
+                is HissatsusUiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(48.dp),
@@ -128,7 +129,7 @@ fun AssignHissatsuScreen(
                     }
                 }
 
-                com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusUiState.Error -> {
+                HissatsusUiState.Error -> {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -164,7 +165,7 @@ fun AssignHissatsuScreen(
                     }
                 }
 
-                is com.example.inazumaelevenexpress2.ui.screens.hissatsus.HissatsusUiState.Success -> {
+                is HissatsusUiState.Success -> {
                     val availableHissatsus = hissatsusUiState.hissatsus
                         .filter { it.hissatsuId !in assignedIds }
                         .sortedByDescending { it.power }
@@ -350,7 +351,7 @@ private fun HissatsuAssignmentItem(
                     .clickable { onClick() },
                 contentAlignment = Alignment.Center
             ) {
-                androidx.compose.material.icons.Icons.Default.Add
+                Icons.Default.Add
             }
         }
     }

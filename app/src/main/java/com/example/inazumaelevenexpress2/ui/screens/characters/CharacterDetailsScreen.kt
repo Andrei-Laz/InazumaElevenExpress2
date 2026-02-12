@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.inazumaelevenexpress2.R
 import com.example.inazumaelevenexpress2.model.Hissatsu
 import com.example.inazumaelevenexpress2.model.InazumaCharacter
@@ -446,4 +448,22 @@ private fun AssignedHissatsuItem(
             }
         }
     }
+}
+
+@Composable
+fun CharacterPortrait(character: InazumaCharacter) {
+    val imageUrl = "http://10.0.2.2:8080${character.imageUrl}"
+
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(imageUrl)
+            .crossfade(true)
+            .build(),
+        contentDescription = character.name,
+        modifier = Modifier
+            .size(200.dp)
+            .clip(CircleShape),
+        placeholder = painterResource(R.drawable.default_image),
+        error = painterResource(R.drawable.default_image)
+    )
 }
