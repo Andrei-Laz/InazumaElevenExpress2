@@ -1,29 +1,30 @@
 package com.example.inazumaelevenexpress2.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import com.example.inazumaelevenexpress2.model.enums.Element
 import com.example.inazumaelevenexpress2.model.enums.Position
 import com.example.inazumaelevenexpress2.model.enums.Sex
-import kotlinx.serialization.Serializable
 
 @Serializable
 data class InazumaCharacter(
-    var characterId: Int? = null,
+    val characterId: Int?,
+    val nickname: String,
+    val name: String,
+    val sex: Sex,
+    val element: Element,
+    val position: Position,
+    val kick: Int,
+    val dribble: Int,
+    val block: Int,
 
-    var nickname: String = "",
+    @SerialName("catch")
+    val catching: Int,
 
-    var name: String = "",
+    val technique: Int,
+    val speed: Int,
+    val stamina: Int,
+    val luck: Int,
 
-    var sex: Sex = Sex.UNKNOWN,
-    var element: Element = Element.VOID,
-    var position: Position = Position.ND,
-
-
-    var kick: Int = 0,
-    var dribble: Int = 0,
-    var block: Int = 0,
-    var catch: Int = 0,
-    var technique: Int = 0,
-    var speed: Int = 0,
-    var stamina: Int = 0,
-    var luck: Int = 0
+    val assignedHissatsus: List<Hissatsu> = emptyList()
 )

@@ -1,5 +1,6 @@
 package com.example.inazumaelevenexpress2.data
 
+import com.example.inazumaelevenexpress2.network.CharacterHissatsusApiService
 import com.example.inazumaelevenexpress2.network.HissatsusApiService
 import com.example.inazumaelevenexpress2.network.InazumaCharactersApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -10,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 interface AppContainer {
     val inazumaCharactersRepository: InazumaCharactersRepository
     val hissatsusRepository: HissatsusRepository
+    val characterHissatsusRepository: CharacterHissatsusRepository
 }
 
 class DefaultAppContainer: AppContainer {
@@ -32,5 +34,12 @@ class DefaultAppContainer: AppContainer {
     }
     override val hissatsusRepository: HissatsusRepository by lazy {
         DefaultHissatsusRepository(hissatsusRetrofitService)
+    }
+
+    private val characterHissatsusService: CharacterHissatsusApiService by lazy {
+        retrofit.create(CharacterHissatsusApiService::class.java)
+    }
+    override val characterHissatsusRepository: CharacterHissatsusRepository by lazy {
+        DefaultCharacterHissatsusRepository(characterHissatsusService)
     }
 }

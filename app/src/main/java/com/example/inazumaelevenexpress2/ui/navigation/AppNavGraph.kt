@@ -12,6 +12,7 @@ import com.example.inazumaelevenexpress2.ui.screens.account.AccountScreen
 import com.example.inazumaelevenexpress2.ui.screens.auth.InitialScreen
 import com.example.inazumaelevenexpress2.ui.screens.auth.LoginScreen
 import com.example.inazumaelevenexpress2.ui.screens.auth.RegisterScreen
+import com.example.inazumaelevenexpress2.ui.screens.characters.AssignHissatsuScreen
 import com.example.inazumaelevenexpress2.ui.screens.characters.CharacterDetailsScreen
 import com.example.inazumaelevenexpress2.ui.screens.characters.InazumaCharactersUiState
 import com.example.inazumaelevenexpress2.ui.screens.characters.InazumaCharactersViewModel
@@ -35,7 +36,7 @@ fun AppNavGraph() {
 
         composable(route = Screen.Login.route) {
             LoginScreen(
-                onNavigateToHome = { 
+                onNavigateToHome = {
                     navController.navigate(Screen.Main.route) {
                         launchSingleTop = true
                         restoreState = true
@@ -43,7 +44,7 @@ fun AppNavGraph() {
                             saveState = true
                         }
                     }
-                 },
+                },
                 onNavigateBack = { navController.popBackStack() }
             )
         }
@@ -79,6 +80,25 @@ fun AppNavGraph() {
             if (character != null) {
                 CharacterDetailsScreen(character = character, navController = navController)
             }
+        }
+
+        // ✅ FIXED: No ViewModel parameters - screen creates them internally
+        composable(
+            route = "assign-hissatsu/{characterId}/{characterName}",
+            arguments = listOf(
+                navArgument("characterId") { type = NavType.IntType },
+                navArgument("characterName") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
+            val characterName = backStackEntry.arguments?.getString("characterName") ?: "Character"
+
+            // ✅ Screen creates its own ViewModels using factory pattern
+            AssignHissatsuScreen(
+                characterId = characterId,
+                characterName = characterName,
+                navController = navController
+            )
         }
     }
 }
