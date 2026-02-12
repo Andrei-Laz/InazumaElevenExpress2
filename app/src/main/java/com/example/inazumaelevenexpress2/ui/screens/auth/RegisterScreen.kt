@@ -29,11 +29,9 @@ fun RegisterScreen(
     onNavigateToLogin: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    // Background image as full-screen backdrop
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background image with overlay
         Image(
             painter = painterResource(id = R.drawable.inazuma_background),
             contentDescription = "Background",
@@ -48,7 +46,6 @@ fun RegisterScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Registration form container
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -67,7 +64,6 @@ fun RegisterScreen(
                             shape = RoundedCornerShape(20.dp)
                         )
                 ) {
-                    // Title
                     Text(
                         text = stringResource(R.string.create_account),
                         style = MaterialTheme.typography.headlineMedium,
@@ -77,7 +73,6 @@ fun RegisterScreen(
                             .padding(bottom = 24.dp)
                     )
 
-                    // Username field
                     OutlinedTextField(
                         value = "",
                         onValueChange = {},
@@ -95,7 +90,6 @@ fun RegisterScreen(
                         )
                     )
 
-                    // Email field
                     OutlinedTextField(
                         value = "",
                         onValueChange = {},
@@ -114,7 +108,6 @@ fun RegisterScreen(
                         )
                     )
 
-                    // Password field
                     OutlinedTextField(
                         value = "",
                         onValueChange = {},
@@ -134,7 +127,6 @@ fun RegisterScreen(
                         )
                     )
 
-                    // Register button
                     Button(
                         onClick = onNavigateToLogin,
                         modifier = Modifier

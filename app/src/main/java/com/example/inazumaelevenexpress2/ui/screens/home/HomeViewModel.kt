@@ -6,5 +6,4 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
-    // ViewModel logic will be added here in the future
 }

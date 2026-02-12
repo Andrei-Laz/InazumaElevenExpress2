@@ -14,7 +14,6 @@ val Pink40 = Color(0xFF7D5260)
 val Orange = Color(0xFFFFAE00)
 val DarkOrange = Color(0xFFFF9000)
 
-// ui/theme/Color.kt
 @Composable
 fun ElementColor(element: Element): Color {
     return when (element) {

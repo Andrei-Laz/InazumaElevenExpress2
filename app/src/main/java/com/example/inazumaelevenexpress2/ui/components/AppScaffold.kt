@@ -21,8 +21,6 @@ fun AppScaffold(
     currentDestination: MainDestination,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    // For production: Add bottom nav + drawer here
-    // For now: Simple top bar for main app screens
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {

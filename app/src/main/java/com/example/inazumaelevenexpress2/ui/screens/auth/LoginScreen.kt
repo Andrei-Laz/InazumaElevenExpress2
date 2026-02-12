@@ -39,11 +39,9 @@ fun LoginScreen(
     onNavigateToHome: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
-    // Background image as full-screen backdrop
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background image with overlay
         Image(
             painter = painterResource(id = R.drawable.inazuma_background),
             contentDescription = "Background",
@@ -51,7 +49,6 @@ fun LoginScreen(
             contentScale = ContentScale.Crop
         )
 
-        // Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,7 +65,6 @@ fun LoginScreen(
                     .padding(bottom = 24.dp)
             )
 
-            // Login form container
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,7 +85,6 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Username field
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
@@ -108,7 +103,6 @@ fun LoginScreen(
 
                 )
 
-                // Password field
                 OutlinedTextField(
                     value = "",
                     onValueChange = {},
@@ -128,7 +122,6 @@ fun LoginScreen(
                     )
                 )
 
-                // Login button
                 Button(
                     onClick = onNavigateToHome,
                     modifier = Modifier

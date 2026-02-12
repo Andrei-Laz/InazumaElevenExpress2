@@ -12,7 +12,6 @@ import com.example.inazumaelevenexpress2.ui.navigation.AppNavGraph
 
 @Composable
 fun InazumaElevenExpressApp(context: Context) {
-    // Create UserPreferences instance (in production, inject via Hilt)
     val userPreferences = remember { UserPreferences(context) }
 
     Surface(

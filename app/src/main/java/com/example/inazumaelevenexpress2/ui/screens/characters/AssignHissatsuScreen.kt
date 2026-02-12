@@ -42,22 +42,17 @@ fun AssignHissatsuScreen(
     characterName: String,
     navController: NavController
 ) {
-    // ✅ CORRECT: Get ViewModels INSIDE composable using factory pattern
     val characterDetailsViewModel: CharacterDetailsViewModel = viewModel(factory = CharacterDetailsViewModel.Factory)
     val hissatsusViewModel: HissatsusViewModel = viewModel(factory = HissatsusViewModel.Factory)
 
-    // Load assigned hissatsus when screen opens
     LaunchedEffect(characterId) {
         characterDetailsViewModel.loadAssignedHissatsus(characterId)
     }
 
-    // ✅ FIX 1: For StateFlow (CharacterDetailsViewModel), use collectAsState()
     val assignedUiState by characterDetailsViewModel.uiState.collectAsState()
 
-    // ✅ FIX 2: For mutableStateOf (HissatsusViewModel), access DIRECTLY (no collectAsState needed)
     val hissatsusUiState = hissatsusViewModel.hissatsusUiState
 
-    // Extract assigned hissatsu IDs for filtering
     val assignedIds = when (assignedUiState) {
         is CharacterDetailsUiState.Success -> (assignedUiState as CharacterDetailsUiState.Success).assignedHissatsus.mapNotNull { it.hissatsuId }
         else -> emptyList()
@@ -85,7 +80,7 @@ fun AssignHissatsuScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFFFF6B6B)  // Fire orange-red
+                    containerColor = Color(0xFFFF6B6B)
                 )
             )
         }
@@ -95,7 +90,6 @@ fun AssignHissatsuScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Background with gradient overlay
             Image(
                 painter = painterResource(id = R.drawable.inazuma_background),
                 contentDescription = "Background",
@@ -116,9 +110,7 @@ fun AssignHissatsuScreen(
                     )
             )
 
-            // Content based on state
             when (hissatsusUiState) {
-                // ✅ FIX 3: Proper when expression for sealed interface (no smart cast needed)
                 is HissatsusUiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator(
@@ -171,7 +163,6 @@ fun AssignHissatsuScreen(
                         .sortedByDescending { it.power }
 
                     if (availableHissatsus.isEmpty()) {
-                        // All hissatsus already assigned
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -214,7 +205,6 @@ fun AssignHissatsuScreen(
                             }
                         }
                     } else {
-                        // Show list of available hissatsus
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -281,7 +271,6 @@ private fun HissatsuAssignmentItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Element badge
             Box(
                 modifier = Modifier
                     .size(56.dp)
@@ -311,7 +300,6 @@ private fun HissatsuAssignmentItem(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Hissatsu info
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = hissatsu.name,
@@ -342,7 +330,6 @@ private fun HissatsuAssignmentItem(
                 }
             }
 
-            // Assign button
             Box(
                 modifier = Modifier
                     .size(48.dp)

@@ -43,15 +43,12 @@ fun CharacterDetailsScreen(
     character: InazumaCharacter,
     navController: NavController
 ) {
-    // ✅ Get ViewModel using factory pattern INSIDE composable
     val viewModel: CharacterDetailsViewModel = viewModel(factory = CharacterDetailsViewModel.Factory)
 
-    // ✅ FIX: Load assigned hissatsus (NOT loadCharacterDetails which doesn't exist)
     LaunchedEffect(character.characterId) {
         character.characterId?.let { viewModel.loadAssignedHissatsus(it) }
     }
 
-    // ✅ Collect StateFlow properly
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -119,7 +116,6 @@ fun CharacterDetailsScreen(
                     )
             )
 
-            // Main content
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -127,7 +123,6 @@ fun CharacterDetailsScreen(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Character portrait section
                 item {
                     Box(
                         modifier = Modifier
@@ -143,7 +138,6 @@ fun CharacterDetailsScreen(
                             contentScale = ContentScale.Crop
                         )
 
-                        // Element badge
                         Box(
                             modifier = Modifier
                                 .align(Alignment.BottomEnd)
@@ -164,7 +158,6 @@ fun CharacterDetailsScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Nickname
                     if (character.nickname.isNotBlank()) {
                         Text(
                             text = "\"${character.nickname}\"",
@@ -175,7 +168,6 @@ fun CharacterDetailsScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                     }
 
-                    // Position badge
                     Box(
                         modifier = Modifier
                             .background(
@@ -197,7 +189,6 @@ fun CharacterDetailsScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                 }
 
-                // Stats section
                 item {
                     Card(
                         modifier = Modifier
@@ -223,9 +214,7 @@ fun CharacterDetailsScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            // Stats Grid
                             Row(modifier = Modifier.fillMaxWidth()) {
-                                // Left column
                                 Column(modifier = Modifier.weight(1f)) {
                                     StatRow("Kick", character.kick, Color(0xFFFF6B6B))
                                     StatRow("Dribble", character.dribble, Color(0xFF4ECDC4))
@@ -235,7 +224,6 @@ fun CharacterDetailsScreen(
 
                                 Spacer(modifier = Modifier.width(16.dp))
 
-                                // Right column
                                 Column(modifier = Modifier.weight(1f)) {
                                     StatRow("Block", character.block, Color(0xFF96CEB4))
                                     StatRow("Catch", character.catching, Color(0xFF6C5CE7))
@@ -249,7 +237,6 @@ fun CharacterDetailsScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                 }
 
-                // Assigned Hissatsus section
                 item {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -278,7 +265,6 @@ fun CharacterDetailsScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            // Show loading/error states
                             when (uiState) {
                                 CharacterDetailsUiState.Loading -> {
                                     Box(
@@ -310,7 +296,6 @@ fun CharacterDetailsScreen(
                                                 .padding(16.dp)
                                         )
                                     } else {
-                                        // Show assigned hissatsus
                                         hissatsus.forEach { hissatsu ->
                                             AssignedHissatsuItem(
                                                 hissatsu = hissatsu,
@@ -402,7 +387,6 @@ private fun AssignedHissatsuItem(
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Element indicator
             Box(
                 modifier = Modifier
                     .size(36.dp)
@@ -420,7 +404,6 @@ private fun AssignedHissatsuItem(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            // Hissatsu details
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = hissatsu.name,
@@ -435,7 +418,6 @@ private fun AssignedHissatsuItem(
                 )
             }
 
-            // Remove button
             IconButton(
                 onClick = onRemove,
                 modifier = Modifier.size(36.dp)
@@ -448,22 +430,4 @@ private fun AssignedHissatsuItem(
             }
         }
     }
-}
-
-@Composable
-fun CharacterPortrait(character: InazumaCharacter) {
-    val imageUrl = "http://10.0.2.2:8080${character.imageUrl}"
-
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .crossfade(true)
-            .build(),
-        contentDescription = character.name,
-        modifier = Modifier
-            .size(200.dp)
-            .clip(CircleShape),
-        placeholder = painterResource(R.drawable.default_image),
-        error = painterResource(R.drawable.default_image)
-    )
 }

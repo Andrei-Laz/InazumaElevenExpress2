@@ -176,10 +176,10 @@ private fun PowerBar(power: Int) {
                 .fillMaxHeight()
                 .background(
                     color = when {
-                        power >= 90 -> Color(0xFFFF6B6B) // Red for high power
-                        power >= 70 -> Color(0xFFFFA500) // Orange for medium-high
-                        power >= 50 -> Color(0xFFFFD700) // Yellow for medium
-                        else -> Color(0xFF90EE90)        // Green for low
+                        power >= 90 -> Color(0xFFFF6B6B)
+                        power >= 70 -> Color(0xFFFFA500)
+                        power >= 50 -> Color(0xFFFFD700)
+                        else -> Color(0xFF90EE90)
                     },
                     shape = RoundedCornerShape(4.dp, if (progress == 1f) 4.dp else 0.dp, if (progress == 1f) 4.dp else 0.dp, 4.dp)
                 )

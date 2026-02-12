@@ -24,7 +24,6 @@ class AuthViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Idle)
     val uiState: StateFlow<AuthUiState> = _uiState
 
-    // Simulated login (replace with actual API call)
     fun login(username: String, password: String) {
         viewModelScope.launch {
             _uiState.value = AuthUiState.Loading
@@ -39,7 +38,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    // Simulated register (replace with actual API call)
     fun register(username: String, email: String, password: String) {
         viewModelScope.launch {
             _uiState.value = AuthUiState.Loading

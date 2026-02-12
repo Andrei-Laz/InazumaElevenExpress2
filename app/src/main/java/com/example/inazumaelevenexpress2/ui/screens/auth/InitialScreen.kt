@@ -28,11 +28,9 @@ fun InitialScreen(
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Background image as full-screen backdrop
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Background image with overlay
         Image(
             painter = painterResource(id = R.drawable.inazuma_background),
             contentDescription = "Background",
@@ -40,7 +38,6 @@ fun InitialScreen(
             contentScale = ContentScale.Crop
         )
 
-        // Content
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -63,7 +60,6 @@ fun InitialScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Login button (orange with glow)
             Button(
                 onClick = onLoginClick,
                 modifier = Modifier
@@ -86,7 +82,6 @@ fun InitialScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Register button (blue with glow)
             Button(
                 onClick = onRegisterClick,
                 modifier = Modifier
